@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class Main extends Application {
 
-    private static final double TARGET_FPS = 120;
+    private static final double TARGET_FPS = 60;
     private static final long TARGET_TIME_BETWEEN_UPDATES = (long) (1000 / TARGET_FPS); // в миллисекундах
 
     private final ScheduledExecutorService gameLoopExecutor = Executors.newScheduledThreadPool(1,
@@ -31,13 +31,12 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         Pane pane = new Pane();
-        Scene scene = new Scene(pane, 400, 300);
+        Scene scene = new Scene(pane, 1024, 576);
         stage.setScene(scene);
         stage.setTitle("Circle Battlefield");
         stage.show();
         Player player = new Player();
-        Input input = new InputImpl();
-        scene.setOnKeyPressed((InputImpl) input);
+        Input input = new InputImpl(scene);
         PlayerMovementPort playerMovementPort = new PlayerMovementAdapter(input);
         PlayerRenderPort playerRenderPort = new PlayerRenderAdapter(pane);
         GameLoop gameLoop = new GameLoopImpl(player, playerMovementPort, playerRenderPort);
@@ -57,6 +56,9 @@ public class Main extends Application {
     public void stop() throws Exception {
         super.stop();
         gameLoopExecutor.shutdown();
-        gameLoopExecutor.awaitTermination(3L, TimeUnit.SECONDS);
+        boolean shutdownResult = gameLoopExecutor.awaitTermination(3L, TimeUnit.SECONDS);
+        if (shutdownResult) {
+            log.info("Game loop gracefully terminated");
+        }
     }
 }

@@ -1,5 +1,6 @@
 package org.nullhater.circlebattlefield.infrastructure.adapter;
 
+import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -20,7 +21,9 @@ public class PlayerRenderAdapter implements PlayerRenderPort {
 
     @Override
     public void render(Player player) {
-        circle.setCenterX(player.getPosition().x());
-        circle.setCenterY(player.getPosition().y());
+        Platform.runLater(() -> {
+            circle.setCenterX(player.getPosition().x());
+            circle.setCenterY(player.getPosition().y());
+        });
     }
 }
