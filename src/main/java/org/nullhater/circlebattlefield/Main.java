@@ -39,7 +39,7 @@ public class Main extends Application {
         Input input = new InputImpl();
         scene.setOnKeyPressed((InputImpl) input);
         PlayerMovementPort playerMovementPort = new PlayerMovementAdapter(input);
-        PlayerRenderPort playerRenderPort = new PlayerRenderAdapter();
+        PlayerRenderPort playerRenderPort = new PlayerRenderAdapter(pane);
         GameLoop gameLoop = new GameLoopImpl(player, playerMovementPort, playerRenderPort);
         gameLoopExecutor.scheduleAtFixedRate(
                 gameLoop::loop,

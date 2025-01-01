@@ -27,7 +27,7 @@ public class GameLoopImpl implements GameLoop {
         long currentTime = System.nanoTime();
         double deltaTime = (double) (currentTime - lastTime) / 1_000_000_000L;
         lastTime = currentTime;
-        player.move(playerMovementPort.getDirection(), 1L, deltaTime);
+        player.move(playerMovementPort.getDirection(), 100L, deltaTime); //TODO return speedCoefficient to 1
         playerRenderPort.render(player);
     }
 }
