@@ -4,5 +4,5 @@ import org.nullhater.circlebattlefield.domain.core.Vector2;
 
 public interface Movable2 {
 
-    void move(Vector2 direction, Long speedCoefficient, Long deltaTime);
+    void move(Vector2 direction, long speedCoefficient, double deltaTime);
 }

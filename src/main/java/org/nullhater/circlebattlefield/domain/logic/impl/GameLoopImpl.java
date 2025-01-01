@@ -19,15 +19,15 @@ public class GameLoopImpl implements GameLoop {
         this.player = player;
         this.playerMovementPort = playerMovementPort;
         this.playerRenderPort = playerRenderPort;
-        lastTime = System.currentTimeMillis();
+        lastTime = System.nanoTime();
     }
 
     @Override
     public void loop() {
-        long currentTime = System.currentTimeMillis();
-        long deltaTime = (currentTime - lastTime) / 1000;
+        long currentTime = System.nanoTime();
+        double deltaTime = (double) (currentTime - lastTime) / 1_000_000_000L;
         lastTime = currentTime;
-        player.move(playerMovementPort.getDirection(), 2L, deltaTime);
+        player.move(playerMovementPort.getDirection(), 1L, deltaTime);
         playerRenderPort.render(player);
     }
 }

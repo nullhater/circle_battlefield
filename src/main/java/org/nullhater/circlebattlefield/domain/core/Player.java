@@ -8,7 +8,7 @@ public class Player implements Movable2 {
     private double y;
 
     @Override
-    public void move(Vector2 direction, Long speedCoefficient, Long deltaTime) {
+    public void move(Vector2 direction, long speedCoefficient, double deltaTime) {
         double nativeSpeed = direction.length();
         if (nativeSpeed > 1D) {
             nativeSpeed = 1D;
