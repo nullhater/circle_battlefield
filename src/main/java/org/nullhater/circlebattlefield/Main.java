@@ -5,7 +5,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import org.nullhater.circlebattlefield.domain.core.GameField;
 import org.nullhater.circlebattlefield.domain.core.Player;
+import org.nullhater.circlebattlefield.domain.core.Vector2;
+import org.nullhater.circlebattlefield.domain.core.object.Wall2;
 import org.nullhater.circlebattlefield.domain.core.port.PlayerMovementPort;
 import org.nullhater.circlebattlefield.domain.core.port.PlayerRenderPort;
 import org.nullhater.circlebattlefield.domain.logic.GameLoop;
@@ -15,6 +18,7 @@ import org.nullhater.circlebattlefield.infrastructure.adapter.PlayerRenderAdapte
 import org.nullhater.circlebattlefield.infrastructure.engine.input.Input;
 import org.nullhater.circlebattlefield.infrastructure.engine.input.impl.InputImpl;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,10 +40,17 @@ public class Main extends Application {
         stage.setTitle("Circle Battlefield");
         stage.show();
         Player player = new Player();
+        GameField gameField = new GameField(player,
+                List.of(
+                        new Wall2(new Vector2(0, 0), new Vector2(0, 50), 0.2),
+                        new Wall2(new Vector2(0, 50), new Vector2(50, 50), 0.2),
+                        new Wall2(new Vector2(50, 50), new Vector2(50, 0), 0.2),
+                        new Wall2(new Vector2(50, 0), new Vector2(0, 0), 0.2))
+        );
         Input input = new InputImpl(scene);
         PlayerMovementPort playerMovementPort = new PlayerMovementAdapter(input);
         PlayerRenderPort playerRenderPort = new PlayerRenderAdapter(pane);
-        GameLoop gameLoop = new GameLoopImpl(player, playerMovementPort, playerRenderPort);
+        GameLoop gameLoop = new GameLoopImpl(player, gameField, playerMovementPort, playerRenderPort);
         gameLoopExecutor.scheduleAtFixedRate(
                 gameLoop::loop,
                 0,
